@@ -8,7 +8,7 @@ let playbackDir = 1;
 let posMod = 0;
 let midX;
 let midY;
-let buffer = new Tone.ToneAudioBuffer("TP.mp3", () => {
+let buffer = new Tone.ToneAudioBuffer("tp_comp.mp3", () => {
     console.log('buffer loaded');
 })
 const player = new Tone.Player(buffer).toDestination();
