@@ -69,37 +69,77 @@ function draw() {
     }
 }
 
-function mousePressed() {
-    // console.log(player.state);
-    if (player.loaded) {
-        if (mouseX > (windowWidth / 2 - 50) && mouseX < (windowWidth / 2 + 50)) {
-            if (stopped) {
-                player.start(0, posMod);
-                stopped = false;
-                playing = true;
-            } else if (ffwd || rwind) {
-                // player.start(0, position);
-                player.playbackRate = 1;
-                ffwd = false;
-                rwind = false;
+// function mousePressed() {
+//     // console.log(player.state);
+//     if (player.loaded) {
+//         if (mouseX > (windowWidth / 2 - 50) && mouseX < (windowWidth / 2 + 50)) {
+//             if (stopped) {
+//                 player.start(0, posMod);
+//                 stopped = false;
+//                 playing = true;
+//             } else if (ffwd || rwind) {
+//                 // player.start(0, position);
+//                 player.playbackRate = 1;
+//                 ffwd = false;
+//                 rwind = false;
+//                 player.reverse = false;
+//                 playbackDir = 1;
+//                 player.start(0, posMod);
+//             } else {
+//                 player.stop();
+//                 stopped = true;
+//                 playing = false;
+//             }
+//         } else if (mouseX > (windowWidth / 2 + 200) && mouseX < windowWidth) {
+//             player.playbackRate = 5;
+//             player.reverse = false;
+//             ffwd = true;
+//             playbackDir = 1;
+//         } else if (mouseX < (windowWidth / 2 - 200) && mouseX > 0) {
+//             player.playbackRate = 5;
+//             player.reverse = true;
+//             rwind = true;
+//             playbackDir = -1;
+//         }
+//     }
+// }
+
+function touchStarted(event) {
+    if (touches.length > 0) {
+        let x = touches[0].x;
+        let y = touches[0].y;
+        if (player.loaded) {
+            if (x > (windowWidth / 2 - 50) && x < (windowWidth / 2 + 50)) {
+                if (stopped) {
+                    player.start(0, posMod);
+                    stopped = false;
+                    playing = true;
+                } else if (ffwd || rwind) {
+                    // player.start(0, position);
+                    player.playbackRate = 1;
+                    ffwd = false;
+                    rwind = false;
+                    player.reverse = false;
+                    playbackDir = 1;
+                    player.start(0, posMod);
+                } else {
+                    player.stop();
+                    stopped = true;
+                    playing = false;
+                }
+            } else if (x > (windowWidth / 2 + 200) && x < windowWidth) {
+                player.playbackRate = 5;
                 player.reverse = false;
+                ffwd = true;
                 playbackDir = 1;
-                player.start(0, posMod);
-            } else {
-                player.stop();
-                stopped = true;
-                playing = false;
+            } else if (x < (windowWidth / 2 - 200) && x > 0) {
+                player.playbackRate = 5;
+                player.reverse = true;
+                rwind = true;
+                playbackDir = -1;
             }
-        } else if (mouseX > (windowWidth / 2 + 200) && mouseX < windowWidth) {
-            player.playbackRate = 5;
-            player.reverse = false;
-            ffwd = true;
-            playbackDir = 1;
-        } else if (mouseX < (windowWidth / 2 - 200) && mouseX > 0) {
-            player.playbackRate = 5;
-            player.reverse = true;
-            rwind = true;
-            playbackDir = -1;
         }
+
+        console.log(touches[0].x)
     }
 }
