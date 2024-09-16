@@ -23,16 +23,12 @@ function setup() {
     background(0);
     rectMode(CENTER);
     imageMode(CENTER);
-    // frameRate(30);
     midX = windowWidth / 2;
     midY = windowHeight / 2;
     image(bg, midX, midY);
 }
 
 function draw() {
-    // if (frameCount % 60 == 0) {
-    //     image(bg, midX, midY);
-    // }
     noFill();
     stroke(255);
     strokeWeight(3)
