@@ -9,7 +9,7 @@ let posMod = 0;
 let midX;
 let midY;
 let buffer = new Tone.ToneAudioBuffer("TP.mp3", () => {
-    console.log('buffer loaded')
+    console.log('buffer loaded');
 })
 const player = new Tone.Player(buffer).toDestination();
 player.loop = true;
@@ -23,19 +23,21 @@ function setup() {
     background(0);
     rectMode(CENTER);
     imageMode(CENTER);
-    frameRate(30);
+    // frameRate(30);
     midX = windowWidth / 2;
     midY = windowHeight / 2;
     image(bg, midX, midY);
 }
 
 function draw() {
-    // background(0);
-    // image(bg, midX, midY);
+    // if (frameCount % 60 == 0) {
+    //     image(bg, midX, midY);
+    // }
     noFill();
     stroke(255);
     strokeWeight(3)
     if (buffer.loaded) {
+        image(bg, midX, midY);
         if (stopped || ffwd || rwind) {
             fill(0);
         } else {
@@ -57,7 +59,11 @@ function draw() {
         triangle(200, midY - 50, 100, midY, 200, midY + 50)
         triangle(250, midY - 50, 150, midY, 250, midY + 50)
     } else {
-        // text('loading', 10, windowHeight / 2)
+        fill(255);
+        circle((midX - 100) + frameCount % 200, midY, 30)
+        if (frameCount % 200 == 0) {
+            image(bg, midX, midY);
+        }
     }
     if (playing) {
         if (frameCount % 60 == 0) {
@@ -67,7 +73,6 @@ function draw() {
             console.log(posMod)
         }
     }
-    // console.log('yo')
 }
 
 function mouseClicked() {
@@ -104,16 +109,3 @@ function mouseClicked() {
         }
     }
 }
-
-//  function mousePressed() {
-//      if (mouseX > (windowWidth / 2 + 200) && mouseX < windowWidth) {
-//          player.playbackRate = 10;
-//      }
-//  }
-
-//  function mouseReleased() {
-//      console.log('released')
-//          // if (mouseX > (windowWidth / 2 + 200) && mouseX < windowWidth) {
-//      player.playbackRate = 1;
-//      // }
-//  }
