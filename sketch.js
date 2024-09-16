@@ -8,14 +8,10 @@ let playbackDir = 1;
 let posMod = 0;
 let midX;
 let midY;
-const buff_len = 1547.5;
-let loaded = false;
-// let buffer = new Tone.ToneAudioBuffer("tp_comp.mp3", () => {
-//     console.log('buffer loaded');
-// })
-const player = new Tone.Player('https://mattholamieux.github.io/test-plot-recording/tp_comp.mp3', () => {
-    loaded = true;
-}).toDestination();
+let buffer = new Tone.ToneAudioBuffer("tp_comp.mp3", () => {
+    console.log('buffer loaded');
+})
+const player = new Tone.Player(buffer).toDestination();
 player.loop = true;
 
 function preload() {
@@ -36,7 +32,7 @@ function draw() {
     noFill();
     stroke(255);
     strokeWeight(3)
-    if (loaded) {
+    if (player.loaded) {
         image(bg, midX, midY);
         if (stopped || ffwd || rwind) {
             fill(0);
@@ -68,16 +64,14 @@ function draw() {
     if (playing) {
         if (frameCount % 60 == 0) {
             position += player.playbackRate * playbackDir;
-            posMod = (buff_len + position) % buff_len
-            console.log(position)
-            console.log(posMod)
+            posMod = (buffer.duration + position) % buffer.duration
         }
     }
 }
 
 function mouseClicked() {
     // console.log(player.state);
-    if (loaded) {
+    if (player.loaded) {
         if (mouseX > (windowWidth / 2 - 50) && mouseX < (windowWidth / 2 + 50)) {
             if (stopped) {
                 player.start(0, posMod);
