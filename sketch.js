@@ -69,7 +69,7 @@ function draw() {
     }
 }
 
-function mouseClicked() {
+function mousePressed() {
     // console.log(player.state);
     if (player.loaded) {
         if (mouseX > (windowWidth / 2 - 50) && mouseX < (windowWidth / 2 + 50)) {
