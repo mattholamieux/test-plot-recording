@@ -15,7 +15,7 @@ let buffer = new Tone.ToneAudioBuffer("https://mattholamieux.github.io/test-plot
 })
 const player = new Tone.Player(buffer).toDestination();
 player.loop = true;
-document.querySelector("button").addEventListener("click", async() => {
+document.querySelector("div").addEventListener("click", async() => {
     await Tone.start();
     console.log("audio is ready");
 });
@@ -26,6 +26,7 @@ function preload() {
 
 function setup() {
     cnv = createCanvas(window.innerWidth, window.innerHeight);
+    cnv.parent('canvas-holder');
     background(0);
     rectMode(CENTER);
     imageMode(CENTER);
