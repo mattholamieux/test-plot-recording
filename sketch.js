@@ -9,7 +9,7 @@ let posMod = 0;
 let midX;
 let midY;
 let angle = 0;
-let buffer = new Tone.ToneAudioBuffer("tp_short_2.mp3", () => {
+let buffer = new Tone.ToneAudioBuffer("https://mattholamieux.github.io/test-plot-recording/tp_short.mp3", () => {
     console.log('buffer loaded');
 })
 const player = new Tone.Player(buffer).toDestination();
