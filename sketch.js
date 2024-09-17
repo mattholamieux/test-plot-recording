@@ -37,6 +37,7 @@ function setup() {
     midX = window.innerWidth / 2;
     midY = window.innerHeight / 2;
     image(bg, midX, midY);
+    // hello world
 }
 
 function draw() {
