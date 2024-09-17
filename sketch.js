@@ -1,13 +1,4 @@
 let bg;
-var audio = $('#player')[0];
-var audio_url = "tp_short.mp3";
-
-
-$("#dummyElement").trigger("click");
-$('#dummyElement').on('click', () => {
-    audio.play();
-});
-audio.src = audio_url;
 let stopped = true;
 let playing = false;
 let ffwd = false;
@@ -29,15 +20,15 @@ function preload() {
 }
 
 function setup() {
-    cnv = createCanvas(windowWidth, windowHeight);
+    cnv = createCanvas(window.innerWidth, window.innerHeight);
     background(0);
     rectMode(CENTER);
     imageMode(CENTER);
     noFill();
     stroke(0);
     strokeWeight(10)
-    midX = windowWidth / 2;
-    midY = windowHeight / 2;
+    midX = window.innerWidth / 2;
+    midY = window.innerHeight / 2;
     image(bg, midX, midY);
 }
 
@@ -49,21 +40,21 @@ function draw() {
         } else {
             fill(250, 200);
         }
-        triangle(midX - 100, midY - 100, midX + 100, midY, midX - 100, midY + 100)
+        triangle(midX - 50, midY - 50, midX + 50, midY, midX - 50, midY + 50)
         if (ffwd) {
             fill(250, 200);
         } else {
             fill(0, 100)
         }
-        triangle(windowWidth - 200, midY - 50, windowWidth - 100, midY, windowWidth - 200, midY + 50)
-        triangle(windowWidth - 250, midY - 50, windowWidth - 150, midY, windowWidth - 250, midY + 50)
+        triangle(window.innerWidth - 100, midY - 50, window.innerWidth - 50, midY, window.innerWidth - 100, midY + 50)
+        triangle(window.innerWidth - 75, midY - 50, window.innerWidth - 25, midY, window.innerWidth - 75, midY + 50)
         if (rwind) {
             fill(250, 200);
         } else {
             fill(0, 100)
         }
-        triangle(200, midY - 50, 100, midY, 200, midY + 50)
-        triangle(250, midY - 50, 150, midY, 250, midY + 50)
+        // triangle(200, midY - 50, 100, midY, 200, midY + 50)
+        // triangle(250, midY - 50, 150, midY, 250, midY + 50)
     } else {
         fill(255);
         circle((midX - 100) + frameCount % 200, midY, 30)
@@ -82,7 +73,7 @@ function draw() {
 
 // function mousePressed() {
 //     if (player.loaded) {
-//         if (mouseX > (windowWidth / 2 - 50) && mouseX < (windowWidth / 2 + 50)) {
+//         if (mouseX > (window.innerWidth / 2 - 50) && mouseX < (window.innerWidth / 2 + 50)) {
 //             if (stopped) {
 //                 player.start(0, posMod);
 //                 stopped = false;
@@ -99,12 +90,12 @@ function draw() {
 //                 stopped = true;
 //                 playing = false;
 //             }
-//         } else if (mouseX > (windowWidth / 2 + 200) && mouseX < windowWidth) {
+//         } else if (mouseX > (window.innerWidth / 2 + 200) && mouseX < window.innerWidth) {
 //             player.playbackRate = 5;
 //             player.reverse = false;
 //             ffwd = true;
 //             playbackDir = 1;
-//         } else if (mouseX < (windowWidth / 2 - 200) && mouseX > 0) {
+//         } else if (mouseX < (window.innerWidth / 2 - 200) && mouseX > 0) {
 //             player.playbackRate = 5;
 //             player.reverse = true;
 //             rwind = true;
@@ -120,7 +111,7 @@ function touchStarted() {
         let y = touches[0].y;
         if (player.loaded) {
             if (y < midY + 200 && y > midY - 200) {
-                if (x > (windowWidth / 2 - 100) && x < (windowWidth / 2 + 100)) {
+                if (x > (midX - 50) && x < (midX + 50)) {
                     if (stopped) {
                         player.start(0, posMod);
                         stopped = false;
@@ -140,12 +131,12 @@ function touchStarted() {
                         playing = false;
                         console.log('stop');
                     }
-                } else if (x > (windowWidth / 2 + 200) && x < windowWidth) {
+                } else if (x > (window.innerWidth / 2 + 200) && x < window.innerWidth) {
                     player.playbackRate = 5;
                     player.reverse = false;
                     ffwd = true;
                     playbackDir = 1;
-                } else if (x < (windowWidth / 2 - 200) && x > 0) {
+                } else if (x < (window.innerWidth / 2 - 200) && x > 0) {
                     player.playbackRate = 5;
                     player.reverse = true;
                     rwind = true;
