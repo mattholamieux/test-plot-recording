@@ -3,7 +3,7 @@ let stopped = true;
 let playing = false;
 let ffwd = false;
 let rwind = false;
-let position = 0;
+let playbackPos = 0;
 let playbackDir = 1;
 let posMod = 0;
 let midX;
@@ -30,6 +30,9 @@ function setup() {
     midX = windowWidth / 2;
     midY = windowHeight / 2;
     image(bg, midX, midY);
+    let button = createButton('click me');
+    button.position(0, 100);
+    button.mousePressed(playThings);
 }
 
 function draw() {
@@ -37,7 +40,6 @@ function draw() {
         image(bg, midX, midY);
         if (stopped || ffwd || rwind) {
             fill(0, 100);
-            // noFill();
         } else {
             fill(250, 200);
         }
@@ -46,7 +48,6 @@ function draw() {
             fill(250, 200);
         } else {
             fill(0, 100)
-                // noFill();
         }
         triangle(windowWidth - 200, midY - 50, windowWidth - 100, midY, windowWidth - 200, midY + 50)
         triangle(windowWidth - 250, midY - 50, windowWidth - 150, midY, windowWidth - 250, midY + 50)
@@ -54,7 +55,6 @@ function draw() {
             fill(250, 200);
         } else {
             fill(0, 100)
-                // noFill();
         }
         triangle(200, midY - 50, 100, midY, 200, midY + 50)
         triangle(250, midY - 50, 150, midY, 250, midY + 50)
@@ -68,47 +68,69 @@ function draw() {
     }
     if (playing) {
         if (frameCount % 60 == 0) {
-            position += player.playbackRate * playbackDir;
-            posMod = (buffer.duration + position) % buffer.duration
+            playbackPos += player.playbackRate * playbackDir;
+            posMod = (buffer.duration + playbackPos) % buffer.duration
         }
     }
 }
 
-function mousePressed() {
-    // console.log(player.state);
+// function mousePressed() {
+//     // console.log(player.state);
+//     if (player.loaded) {
+//         if (mouseX > (windowWidth / 2 - 50) && mouseX < (windowWidth / 2 + 50)) {
+//             if (stopped) {
+//                 player.start(0, posMod);
+//                 stopped = false;
+//                 playing = true;
+//             } else if (ffwd || rwind) {
+//                 // player.start(0, playbackPos);
+//                 player.playbackRate = 1;
+//                 ffwd = false;
+//                 rwind = false;
+//                 player.reverse = false;
+//                 playbackDir = 1;
+//                 player.start(0, posMod);
+//             } else {
+//                 player.stop();
+//                 stopped = true;
+//                 playing = false;
+//             }
+//         } else if (mouseX > (windowWidth / 2 + 200) && mouseX < windowWidth) {
+//             player.playbackRate = 5;
+//             player.reverse = false;
+//             ffwd = true;
+//             playbackDir = 1;
+//         } else if (mouseX < (windowWidth / 2 - 200) && mouseX > 0) {
+//             player.playbackRate = 5;
+//             player.reverse = true;
+//             rwind = true;
+//             playbackDir = -1;
+//         }
+//     }
+// }
+
+
+function playThings() {
     if (player.loaded) {
-        if (mouseX > (windowWidth / 2 - 50) && mouseX < (windowWidth / 2 + 50)) {
-            if (stopped) {
-                player.start(0, posMod);
-                stopped = false;
-                playing = true;
-            } else if (ffwd || rwind) {
-                // player.start(0, position);
-                player.playbackRate = 1;
-                ffwd = false;
-                rwind = false;
-                player.reverse = false;
-                playbackDir = 1;
-                player.start(0, posMod);
-            } else {
-                player.stop();
-                stopped = true;
-                playing = false;
-            }
-        } else if (mouseX > (windowWidth / 2 + 200) && mouseX < windowWidth) {
-            player.playbackRate = 5;
+        if (stopped) {
+            player.start(0, posMod);
+            stopped = false;
+            playing = true;
+        } else if (ffwd || rwind) {
+            // player.start(0, playbackPos);
+            player.playbackRate = 1;
+            ffwd = false;
+            rwind = false;
             player.reverse = false;
-            ffwd = true;
             playbackDir = 1;
-        } else if (mouseX < (windowWidth / 2 - 200) && mouseX > 0) {
-            player.playbackRate = 5;
-            player.reverse = true;
-            rwind = true;
-            playbackDir = -1;
+            player.start(0, posMod);
+        } else {
+            player.stop();
+            stopped = true;
+            playing = false;
         }
     }
 }
-
 // function touchStarted() {
 //     if (touches.length > 0) {
 //         let x = touches[0].x;
@@ -122,7 +144,7 @@ function mousePressed() {
 //                         playing = true;
 //                         console.log('play');
 //                     } else if (ffwd || rwind) {
-//                         // player.start(0, position);
+//                         // player.start(0, playbackPos);
 //                         player.playbackRate = 1;
 //                         ffwd = false;
 //                         rwind = false;
