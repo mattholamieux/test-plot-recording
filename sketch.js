@@ -8,6 +8,7 @@ let playbackDir = 1;
 let posMod = 0;
 let midX;
 let midY;
+let angle = 0;
 let buffer = new Tone.ToneAudioBuffer("tp_short_2.mp3", () => {
     console.log('buffer loaded');
 })
@@ -63,6 +64,7 @@ function draw() {
         if (frameCount % 200 == 0) {
             image(bg, midX, midY);
         }
+
     }
     if (playing) {
         if (frameCount % 60 == 0) {
@@ -118,6 +120,7 @@ function touchStarted() {
                         player.start(0, posMod);
                         stopped = false;
                         playing = true;
+                        console.log('play');
                     } else if (ffwd || rwind) {
                         // player.start(0, position);
                         player.playbackRate = 1;
@@ -130,6 +133,7 @@ function touchStarted() {
                         player.stop();
                         stopped = true;
                         playing = false;
+                        console.log('stop');
                     }
                 } else if (x > (windowWidth / 2 + 200) && x < windowWidth) {
                     player.playbackRate = 5;
@@ -144,6 +148,5 @@ function touchStarted() {
                 }
             }
         }
-        console.log(touches[0].x)
     }
 }
