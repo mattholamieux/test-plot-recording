@@ -1,4 +1,5 @@
 let bg;
+let firstTouch = true;
 let stopped = true;
 let playing = false;
 let ffwd = false;
@@ -106,43 +107,54 @@ function draw() {
 
 
 function touchStarted() {
-    if (touches.length > 0) {
-        let x = touches[0].x;
-        let y = touches[0].y;
-        if (player.loaded) {
-            if (y < midY + 200 && y > midY - 200) {
-                if (x > (midX - 50) && x < (midX + 50)) {
-                    if (stopped) {
-                        player.start(0, posMod);
-                        stopped = false;
-                        playing = true;
-                        console.log('play');
-                    } else if (ffwd || rwind) {
-                        // player.start(0, playbackPos);
-                        player.playbackRate = 1;
-                        ffwd = false;
-                        rwind = false;
+    if (firstTouch) {
+        initializeTone();
+        firstTouch = false;
+    } else {
+        if (touches.length > 0) {
+            let x = touches[0].x;
+            let y = touches[0].y;
+            if (player.loaded) {
+                if (y < midY + 200 && y > midY - 200) {
+                    if (x > (midX - 50) && x < (midX + 50)) {
+                        if (stopped) {
+                            player.start(0, posMod);
+                            stopped = false;
+                            playing = true;
+                            console.log('play');
+                        } else if (ffwd || rwind) {
+                            // player.start(0, playbackPos);
+                            player.playbackRate = 1;
+                            ffwd = false;
+                            rwind = false;
+                            player.reverse = false;
+                            playbackDir = 1;
+                            player.start(0, posMod);
+                        } else {
+                            player.stop();
+                            stopped = true;
+                            playing = false;
+                            console.log('stop');
+                        }
+                    } else if (x > (window.innerWidth / 2 + 200) && x < window.innerWidth) {
+                        player.playbackRate = 5;
                         player.reverse = false;
+                        ffwd = true;
                         playbackDir = 1;
-                        player.start(0, posMod);
-                    } else {
-                        player.stop();
-                        stopped = true;
-                        playing = false;
-                        console.log('stop');
+                    } else if (x < (window.innerWidth / 2 - 200) && x > 0) {
+                        player.playbackRate = 5;
+                        player.reverse = true;
+                        rwind = true;
+                        playbackDir = -1;
                     }
-                } else if (x > (window.innerWidth / 2 + 200) && x < window.innerWidth) {
-                    player.playbackRate = 5;
-                    player.reverse = false;
-                    ffwd = true;
-                    playbackDir = 1;
-                } else if (x < (window.innerWidth / 2 - 200) && x > 0) {
-                    player.playbackRate = 5;
-                    player.reverse = true;
-                    rwind = true;
-                    playbackDir = -1;
                 }
             }
         }
     }
+
+}
+
+async function initializeTone() {
+    await Tone.start();
+    console.log("audio is ready");
 }
