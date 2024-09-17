@@ -10,15 +10,23 @@ let posMod = 0;
 let midX;
 let midY;
 let angle = 0;
-let buffer = new Tone.ToneAudioBuffer("https://mattholamieux.github.io/test-plot-recording/tp_short.mp3", () => {
+let buffer = new Tone.ToneAudioBuffer("tp_short_2.mp3", () => {
     console.log('buffer loaded');
 })
 const player = new Tone.Player(buffer).toDestination();
 player.loop = true;
-document.querySelector("button").addEventListener("click", async() => {
-    await Tone.start();
-    console.log("audio is ready");
-    firstTouch = false;
+document.querySelector("div").addEventListener("click", async() => {
+    if (firstTouch) {
+        await Tone.start();
+        console.log("audio is ready");
+        if (player.loaded) {
+            player.start(0, posMod);
+            stopped = false;
+            playing = true;
+            console.log('play')
+        }
+        firstTouch = false;
+    }
 });
 
 function preload() {
@@ -27,7 +35,7 @@ function preload() {
 
 function setup() {
     cnv = createCanvas(window.innerWidth, window.innerHeight);
-    // cnv.parent('canvas-holder');
+    cnv.parent('canvas-holder');
     background(0);
     rectMode(CENTER);
     imageMode(CENTER);
@@ -37,7 +45,6 @@ function setup() {
     midX = window.innerWidth / 2;
     midY = window.innerHeight / 2;
     image(bg, midX, midY);
-    // hello world
 }
 
 function draw() {
@@ -127,7 +134,6 @@ function touchStarted() {
                             playing = true;
                             console.log('play');
                         } else if (ffwd || rwind) {
-                            // player.start(0, playbackPos);
                             player.playbackRate = 1;
                             ffwd = false;
                             rwind = false;
@@ -140,12 +146,12 @@ function touchStarted() {
                             playing = false;
                             console.log('stop');
                         }
-                    } else if (x > (window.innerWidth / 2 + 200) && x < window.innerWidth) {
+                    } else if (x > (window.innerWidth - 100) && x < window.innerWidth) {
                         player.playbackRate = 5;
                         player.reverse = false;
                         ffwd = true;
                         playbackDir = 1;
-                    } else if (x < (window.innerWidth / 2 - 200) && x > 0) {
+                    } else if (x < 100 && x > 0) {
                         player.playbackRate = 5;
                         player.reverse = true;
                         rwind = true;
@@ -156,8 +162,3 @@ function touchStarted() {
         }
     }
 }
-
-// async function initializeTone() {
-//     await Tone.start();
-//     console.log("audio is ready");
-// }
