@@ -15,6 +15,10 @@ let buffer = new Tone.ToneAudioBuffer("https://mattholamieux.github.io/test-plot
 })
 const player = new Tone.Player(buffer).toDestination();
 player.loop = true;
+document.querySelector("button").addEventListener("click", async() => {
+    await Tone.start();
+    console.log("audio is ready");
+});
 
 function preload() {
     bg = loadImage('tp_05.jpg')
@@ -107,46 +111,41 @@ function draw() {
 
 
 function touchStarted() {
-    if (firstTouch) {
-        initializeTone();
-        firstTouch = false;
-    } else {
-        if (touches.length > 0) {
-            let x = touches[0].x;
-            let y = touches[0].y;
-            if (player.loaded) {
-                if (y < midY + 200 && y > midY - 200) {
-                    if (x > (midX - 50) && x < (midX + 50)) {
-                        if (stopped) {
-                            player.start(0, posMod);
-                            stopped = false;
-                            playing = true;
-                            console.log('play');
-                        } else if (ffwd || rwind) {
-                            // player.start(0, playbackPos);
-                            player.playbackRate = 1;
-                            ffwd = false;
-                            rwind = false;
-                            player.reverse = false;
-                            playbackDir = 1;
-                            player.start(0, posMod);
-                        } else {
-                            player.stop();
-                            stopped = true;
-                            playing = false;
-                            console.log('stop');
-                        }
-                    } else if (x > (window.innerWidth / 2 + 200) && x < window.innerWidth) {
-                        player.playbackRate = 5;
+    if (touches.length > 0) {
+        let x = touches[0].x;
+        let y = touches[0].y;
+        if (player.loaded) {
+            if (y < midY + 200 && y > midY - 200) {
+                if (x > (midX - 50) && x < (midX + 50)) {
+                    if (stopped) {
+                        player.start(0, posMod);
+                        stopped = false;
+                        playing = true;
+                        console.log('play');
+                    } else if (ffwd || rwind) {
+                        // player.start(0, playbackPos);
+                        player.playbackRate = 1;
+                        ffwd = false;
+                        rwind = false;
                         player.reverse = false;
-                        ffwd = true;
                         playbackDir = 1;
-                    } else if (x < (window.innerWidth / 2 - 200) && x > 0) {
-                        player.playbackRate = 5;
-                        player.reverse = true;
-                        rwind = true;
-                        playbackDir = -1;
+                        player.start(0, posMod);
+                    } else {
+                        player.stop();
+                        stopped = true;
+                        playing = false;
+                        console.log('stop');
                     }
+                } else if (x > (window.innerWidth / 2 + 200) && x < window.innerWidth) {
+                    player.playbackRate = 5;
+                    player.reverse = false;
+                    ffwd = true;
+                    playbackDir = 1;
+                } else if (x < (window.innerWidth / 2 - 200) && x > 0) {
+                    player.playbackRate = 5;
+                    player.reverse = true;
+                    rwind = true;
+                    playbackDir = -1;
                 }
             }
         }
