@@ -18,6 +18,7 @@ player.loop = true;
 document.querySelector("div").addEventListener("click", async() => {
     await Tone.start();
     console.log("audio is ready");
+    firstTouch = false;
 });
 
 function preload() {
@@ -46,7 +47,7 @@ function draw() {
         } else {
             fill(250, 200);
         }
-        triangle(midX - 50, midY - 50, midX + 50, midY, midX - 50, midY + 50)
+        triangle(midX - 50, midY - 75, midX + 50, midY, midX - 50, midY + 75)
         if (ffwd) {
             fill(250, 200);
         } else {
@@ -59,8 +60,8 @@ function draw() {
         } else {
             fill(0, 100)
         }
-        // triangle(200, midY - 50, 100, midY, 200, midY + 50)
-        // triangle(250, midY - 50, 150, midY, 250, midY + 50)
+        triangle(100, midY - 50, 50, midY, 100, midY + 50)
+        triangle(75, midY - 50, 25, midY, 75, midY + 50)
     } else {
         fill(255);
         circle((midX - 100) + frameCount % 200, midY, 30)
@@ -112,49 +113,50 @@ function draw() {
 
 
 function touchStarted() {
-    if (touches.length > 0) {
-        let x = touches[0].x;
-        let y = touches[0].y;
-        if (player.loaded) {
-            if (y < midY + 200 && y > midY - 200) {
-                if (x > (midX - 50) && x < (midX + 50)) {
-                    if (stopped) {
-                        player.start(0, posMod);
-                        stopped = false;
-                        playing = true;
-                        console.log('play');
-                    } else if (ffwd || rwind) {
-                        // player.start(0, playbackPos);
-                        player.playbackRate = 1;
-                        ffwd = false;
-                        rwind = false;
+    if (!firstTouch) {
+        if (touches.length > 0) {
+            let x = touches[0].x;
+            let y = touches[0].y;
+            if (player.loaded) {
+                if (y < midY + 200 && y > midY - 200) {
+                    if (x > (midX - 50) && x < (midX + 50)) {
+                        if (stopped) {
+                            player.start(0, posMod);
+                            stopped = false;
+                            playing = true;
+                            console.log('play');
+                        } else if (ffwd || rwind) {
+                            // player.start(0, playbackPos);
+                            player.playbackRate = 1;
+                            ffwd = false;
+                            rwind = false;
+                            player.reverse = false;
+                            playbackDir = 1;
+                            player.start(0, posMod);
+                        } else {
+                            player.stop();
+                            stopped = true;
+                            playing = false;
+                            console.log('stop');
+                        }
+                    } else if (x > (window.innerWidth / 2 + 200) && x < window.innerWidth) {
+                        player.playbackRate = 5;
                         player.reverse = false;
+                        ffwd = true;
                         playbackDir = 1;
-                        player.start(0, posMod);
-                    } else {
-                        player.stop();
-                        stopped = true;
-                        playing = false;
-                        console.log('stop');
+                    } else if (x < (window.innerWidth / 2 - 200) && x > 0) {
+                        player.playbackRate = 5;
+                        player.reverse = true;
+                        rwind = true;
+                        playbackDir = -1;
                     }
-                } else if (x > (window.innerWidth / 2 + 200) && x < window.innerWidth) {
-                    player.playbackRate = 5;
-                    player.reverse = false;
-                    ffwd = true;
-                    playbackDir = 1;
-                } else if (x < (window.innerWidth / 2 - 200) && x > 0) {
-                    player.playbackRate = 5;
-                    player.reverse = true;
-                    rwind = true;
-                    playbackDir = -1;
                 }
             }
         }
     }
-
 }
 
-async function initializeTone() {
-    await Tone.start();
-    console.log("audio is ready");
-}
+// async function initializeTone() {
+//     await Tone.start();
+//     console.log("audio is ready");
+// }
